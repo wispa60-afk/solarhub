@@ -9,9 +9,13 @@ import { CrossPromo } from "@/components/CrossPromo"
 
 export const revalidate = 300
 
+function slugify(s: string) {
+  return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
+}
+
 export async function generateStaticParams() {
   return siteConfig.categories.map((cat) => ({
-    cat: encodeURIComponent(cat.toLowerCase()),
+    cat: slugify(cat),
   }))
 }
 
@@ -20,10 +24,9 @@ export async function generateMetadata({
 }: {
   params: { cat: string }
 }): Promise<Metadata> {
-  const decoded = decodeURIComponent(params.cat)
   const label =
-    siteConfig.categories.find((c) => c.toLowerCase() === decoded) ??
-    decoded
+    siteConfig.categories.find((c) => slugify(c) === params.cat) ??
+    params.cat
   return {
     title: `${label} Articles`,
     description: `Browse ${label.toLowerCase()} articles on ${siteConfig.name}`,
@@ -35,9 +38,8 @@ export default function CategoryPage({
 }: {
   params: { cat: string }
 }) {
-  const decoded = decodeURIComponent(params.cat)
   const label = siteConfig.categories.find(
-    (c) => c.toLowerCase() === decoded
+    (c) => slugify(c) === params.cat
   )
   if (!label) notFound()
 

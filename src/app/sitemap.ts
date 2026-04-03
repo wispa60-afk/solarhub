@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }))
 
   const categoryUrls = siteConfig.categories.map((cat) => ({
-    url: `${base}/category/${cat.toLowerCase()}`,
+    url: `${base}/category/${encodeURIComponent(cat.toLowerCase())}`,
     lastModified: new Date(),
     changeFrequency: "daily" as const,
     priority: 0.6,

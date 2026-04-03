@@ -22,6 +22,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: base, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
+    { url: `${base}/about`, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${base}/contact`, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${base}/archive`, changeFrequency: "daily", priority: 0.7 },
+    { url: `${base}/privacy`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${base}/terms`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${base}/disclaimer`, changeFrequency: "yearly", priority: 0.3 },
     ...categoryUrls,
     ...articleUrls,
   ]

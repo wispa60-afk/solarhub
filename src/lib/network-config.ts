@@ -22,6 +22,6 @@ export const networkSites: NetworkSite[] = [
     name: "SolarHub",
     url: "https://solarhubai.com.au",
     description: "Solar energy guides for Australian homeowners",
-    accent: "#f59e0b",
+    accent: "#0ea5e9",
   },
 ]

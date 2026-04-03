@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: "Australia's Solar Energy Guide",
   domain: "solarhubai.com.au",
   port: 3202,
-  accent: { primary: "#f59e0b", hover: "#d97706" },
+  accent: { primary: "#0ea5e9", hover: "#0284c7" },
   categories: [
     "Solar Panels",
     "Battery Storage",

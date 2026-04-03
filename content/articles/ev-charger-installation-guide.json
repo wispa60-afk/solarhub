@@ -4,7 +4,14 @@
   "excerpt": "Everything about installing a home EV charger in Australia, from choosing the right charger to installation costs and solar integration.",
   "body": "## Why Install a Home Charger?\n\nPublic charging works in a pinch, but home charging is cheaper, more convenient, and can be powered by your solar panels. Most EV owners do 80%+ of their charging at home.\n\n## Charger Types\n\n### Level 1 — Portable (2-3kW)\n- Plugs into a standard power point\n- Adds 10-15km of range per hour\n- No installation required\n- Fine for PHEVs or light daily use\n\n### Level 2 — Wall-Mounted (7-22kW)\n- Hardwired by a licensed electrician\n- Adds 40-100km of range per hour\n- Most popular choice for home use\n- Requires dedicated circuit\n\n## Popular Home Chargers\n\n### Tesla Wall Connector\n- Up to 22kW charging\n- Built-in WiFi and scheduling\n- Works with all EVs (with adapter)\n- $1,200-$1,500 before installation\n\n### Wallbox Pulsar Plus\n- Up to 22kW charging\n- App control and energy monitoring\n- Solar integration capable\n- $1,000-$1,400 before installation\n\n### Fronius Wattpilot\n- Solar-optimised charging\n- Excess solar mode prioritises free energy\n- Austrian engineering, strong warranty\n- $1,500-$2,000 before installation\n\n## Installation Costs\n\nExpect to pay $500-$2,000 for installation on top of the charger price:\n\n- **Simple install** ($500-$800) — Meter box close to garage, existing capacity\n- **Standard install** ($800-$1,500) — New circuit run, minor switchboard upgrade\n- **Complex install** ($1,500-$2,500) — Long cable run, switchboard upgrade, load management\n\n## Solar + EV Charging\n\nPairing solar panels with an EV charger is the ultimate combination. Smart chargers can:\n\n- Charge only when solar is generating excess power\n- Schedule charging during off-peak hours\n- Balance between home usage and car charging\n- Eliminate fuel costs almost entirely\n\nA 6.6kW solar system generates roughly 25-30kWh per day in good conditions. That's enough to drive 150-180km daily on solar power alone.\n\n## What You Need Before Installing\n\n- Check your switchboard capacity with an electrician\n- Ensure your meter box can handle the additional load\n- Consider a load management device if your supply is limited\n- Get quotes from electricians experienced with EV chargers\n- Check if your energy retailer offers EV-specific tariffs",
   "category": "EV Charging",
-  "tags": ["ev", "charger", "electric vehicle", "installation", "solar charging"],
+  "tags": [
+    "ev",
+    "charger",
+    "electric vehicle",
+    "installation",
+    "solar charging"
+  ],
   "author": "SolarHub Editorial",
-  "publishedAt": "2026-04-02T10:00:00.000Z"
+  "publishedAt": "2026-04-02T10:00:00.000Z",
+  "image": "https://images.unsplash.com/photo-1692052626528-cb97a934a63b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTM2NTZ8MHwxfHNlYXJjaHwxfHxlbGVjdHJpYyUyMHZlaGljbGUlMjBjaGFyZ2VyJTIwaG9tZSUyMGdhcmFnZXxlbnwwfDB8fHwxNzc1MTg2NzQ2fDA&ixlib=rb-4.1.0&q=80&w=1080"
 }

@@ -1,5 +1,9 @@
 import Link from "next/link"
 import { siteConfig } from "@/../site.config"
+
+function slugify(s: string) {
+  return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
+}
 import { networkSites } from "@/lib/network-config"
 
 export function NetworkFooter() {
@@ -30,7 +34,7 @@ export function NetworkFooter() {
               {siteConfig.categories.slice(0, 6).map((cat) => (
                 <li key={cat}>
                   <Link
-                    href={`/category/${cat.toLowerCase()}`}
+                    href={`/category/${slugify(cat)}`}
                     className="text-sm text-zinc-500 hover:text-white transition-colors"
                   >
                     {cat}

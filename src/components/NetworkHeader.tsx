@@ -3,6 +3,10 @@
 import { useState } from "react"
 import Link from "next/link"
 import { siteConfig } from "@/../site.config"
+
+function slugify(s: string) {
+  return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
+}
 import { networkSites } from "@/lib/network-config"
 
 export function NetworkHeader() {
@@ -66,7 +70,7 @@ export function NetworkHeader() {
           {siteConfig.categories.slice(0, 5).map((cat) => (
             <Link
               key={cat}
-              href={`/category/${cat.toLowerCase()}`}
+              href={`/category/${slugify(cat)}`}
               className="text-sm text-zinc-400 hover:text-white transition-colors"
             >
               {cat}
@@ -101,7 +105,7 @@ export function NetworkHeader() {
           {siteConfig.categories.map((cat) => (
             <Link
               key={cat}
-              href={`/category/${cat.toLowerCase()}`}
+              href={`/category/${slugify(cat)}`}
               className="block py-2 text-sm text-zinc-400 hover:text-white"
               onClick={() => setMenuOpen(false)}
             >

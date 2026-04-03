@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: #f59e0b;
+  --accent-hover: #d97706;
+  --bg: #09090b;
+  --bg-secondary: #18181b;
+  --bg-card: #1c1c21;
+  --fg: #fafafa;
+  --fg-muted: #a1a1aa;
+  --border: #27272a;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.prose-article {
+  @apply text-zinc-300 leading-relaxed;
+}
+.prose-article h2 {
+  @apply text-xl font-bold text-zinc-100 mt-8 mb-3;
+}
+.prose-article h3 {
+  @apply text-lg font-semibold text-zinc-200 mt-6 mb-2;
+}
+.prose-article p {
+  @apply mb-4;
+}
+.prose-article ul {
+  @apply list-disc pl-6 mb-4 space-y-1;
+}
+.prose-article ol {
+  @apply list-decimal pl-6 mb-4 space-y-1;
+}
+.prose-article a {
+  @apply text-[var(--accent)] underline hover:text-[var(--accent-hover)];
+}
+.prose-article blockquote {
+  @apply border-l-4 border-zinc-600 pl-4 italic text-zinc-400 my-4;
+}
+.prose-article code {
+  @apply bg-zinc-800 px-1.5 py-0.5 rounded text-sm;
+}
+.prose-article pre {
+  @apply bg-zinc-900 p-4 rounded-lg overflow-x-auto mb-4;
+}
+.prose-article img {
+  @apply rounded-lg my-6;
+}

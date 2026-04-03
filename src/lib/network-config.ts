@@ -1,0 +1,27 @@
+export interface NetworkSite {
+  name: string
+  url: string
+  description: string
+  accent: string
+}
+
+export const networkSites: NetworkSite[] = [
+  {
+    name: "TradiHub",
+    url: "https://tradihubai.com.au",
+    description: "Find trusted Australian tradies",
+    accent: "#0d9488",
+  },
+  {
+    name: "RenoHub",
+    url: "https://renohubai.com.au",
+    description: "Renovation guides & tips for Aussie homeowners",
+    accent: "#f59e0b",
+  },
+  {
+    name: "SolarHub",
+    url: "https://solarhubai.com.au",
+    description: "Solar energy guides for Australian homeowners",
+    accent: "#f59e0b",
+  },
+]

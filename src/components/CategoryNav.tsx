@@ -17,7 +17,7 @@ export function CategoryNav({ active }: { active?: string }) {
       {siteConfig.categories.map((cat) => (
         <Link
           key={cat}
-          href={`/category/${cat.toLowerCase()}`}
+          href={`/category/${encodeURIComponent(cat.toLowerCase())}`}
           className={`rounded-full px-3 py-1 text-sm transition-colors ${
             active?.toLowerCase() === cat.toLowerCase()
               ? "bg-[var(--accent)] text-black font-medium"

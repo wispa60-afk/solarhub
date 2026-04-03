@@ -11,7 +11,7 @@ export const revalidate = 300
 
 export async function generateStaticParams() {
   return siteConfig.categories.map((cat) => ({
-    cat: cat.toLowerCase(),
+    cat: encodeURIComponent(cat.toLowerCase()),
   }))
 }
 
@@ -20,9 +20,10 @@ export async function generateMetadata({
 }: {
   params: { cat: string }
 }): Promise<Metadata> {
+  const decoded = decodeURIComponent(params.cat)
   const label =
-    siteConfig.categories.find((c) => c.toLowerCase() === params.cat) ??
-    params.cat
+    siteConfig.categories.find((c) => c.toLowerCase() === decoded) ??
+    decoded
   return {
     title: `${label} Articles`,
     description: `Browse ${label.toLowerCase()} articles on ${siteConfig.name}`,
@@ -34,8 +35,9 @@ export default function CategoryPage({
 }: {
   params: { cat: string }
 }) {
+  const decoded = decodeURIComponent(params.cat)
   const label = siteConfig.categories.find(
-    (c) => c.toLowerCase() === params.cat
+    (c) => c.toLowerCase() === decoded
   )
   if (!label) notFound()
 

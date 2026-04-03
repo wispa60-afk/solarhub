@@ -18,7 +18,7 @@ export function getAd(position: AdPosition): HouseAd | null {
   if (position === "sidebar" || position === "banner") {
     return {
       title: siteConfig.crossPromo.primary.label,
-      description: "Australia's trusted tradie marketplace",
+      description: "Compare prices from local tradies. Free, no obligation.",
       url: siteConfig.crossPromo.primary.url,
       cta: siteConfig.crossPromo.primary.cta,
       accent: "#0d9488",

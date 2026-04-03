@@ -2,7 +2,7 @@ import { getAllArticles } from "@/lib/articles"
 import { siteConfig } from "@/../site.config"
 import { ArticleCard } from "@/components/ArticleCard"
 import { CategoryNav } from "@/components/CategoryNav"
-import { AdSlot } from "@/components/AdSlot"
+import { QuoteCTA } from "@/components/QuoteCTA"
 import { CrossPromo } from "@/components/CrossPromo"
 import { NewsletterSignup } from "@/components/NewsletterSignup"
 
@@ -15,12 +15,25 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero */}
+      {/* Hero with CTA */}
       <section className="mb-10">
         <h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-          {siteConfig.name}
+          Going Solar?{" "}
+          <span style={{ color: "var(--accent)" }}>Get 3 Free Quotes from Local Installers</span>
         </h1>
-        <p className="mt-2 text-lg text-zinc-400">{siteConfig.tagline}</p>
+        <p className="mt-3 text-lg text-zinc-400 max-w-2xl">
+          Compare prices from licensed solar installers in your area. Free, no obligation.
+        </p>
+        <div className="mt-6 flex flex-wrap items-center gap-4">
+          <a
+            href="https://tradihubai.com.au/jobs/new?trade=solar&ref=solarhub"
+            className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-sm font-semibold text-white transition-all shadow-lg"
+            style={{ background: "var(--accent)" }}
+          >
+            Get My Quotes &rarr;
+          </a>
+          <span className="text-sm text-zinc-500">Or browse our guides &darr;</span>
+        </div>
       </section>
 
       {/* Category filter */}
@@ -71,11 +84,6 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Banner ad */}
-      <section className="mb-10">
-        <AdSlot position="banner" />
-      </section>
-
       {/* Article grid */}
       {rest.length > 0 && (
         <section className="mb-10">
@@ -94,7 +102,10 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Newsletter */}
+      {/* Bottom CTA */}
+      <QuoteCTA position="bottom" category="solar" />
+
+      {/* Newsletter (secondary) */}
       <section className="mb-10 max-w-md mx-auto">
         <NewsletterSignup />
       </section>

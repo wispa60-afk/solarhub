@@ -7,50 +7,12 @@ import { siteConfig } from "@/../site.config"
 function slugify(s: string) {
   return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
 }
-import { networkSites } from "@/lib/network-config"
 
 export function NetworkHeader() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [networkOpen, setNetworkOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-md">
-      {/* Network bar */}
-      <div className="border-b border-zinc-800/50 bg-zinc-950">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-1 text-xs text-zinc-500">
-          <div className="relative">
-            <button
-              onClick={() => setNetworkOpen(!networkOpen)}
-              className="hover:text-zinc-300 transition-colors"
-            >
-              DLK Network
-              <span className="ml-1">&#9662;</span>
-            </button>
-            {networkOpen && (
-              <div className="absolute left-0 top-full mt-1 w-56 rounded-lg border border-zinc-800 bg-zinc-900 p-2 shadow-xl">
-                {networkSites.map((site) => (
-                  <a
-                    key={site.url}
-                    href={site.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block rounded-md px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
-                  >
-                    <span className="font-medium">{site.name}</span>
-                    <span className="block text-xs text-zinc-500">
-                      {site.description}
-                    </span>
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-          <span className="hidden sm:inline">
-            Part of the DLK Network
-          </span>
-        </div>
-      </div>
-
       {/* Main nav */}
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
@@ -76,6 +38,13 @@ export function NetworkHeader() {
               {cat}
             </Link>
           ))}
+          <a
+            href="https://tradihubai.com.au/jobs/new?trade=solar&ref=solarhub"
+            className="rounded-lg px-3 py-1.5 text-sm font-semibold text-black"
+            style={{ background: siteConfig.accent.primary }}
+          >
+            Get Quotes
+          </a>
           <Link
             href="/archive"
             className="text-sm text-zinc-400 hover:text-white transition-colors"
@@ -119,6 +88,14 @@ export function NetworkHeader() {
           >
             Archive
           </Link>
+          <a
+            href="https://tradihubai.com.au/jobs/new?trade=solar&ref=solarhub"
+            className="block py-2 text-sm font-semibold"
+            style={{ color: siteConfig.accent.primary }}
+            onClick={() => setMenuOpen(false)}
+          >
+            Get Quotes
+          </a>
         </nav>
       )}
     </header>

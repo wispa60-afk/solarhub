@@ -4,9 +4,7 @@ import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { getArticleBySlug, getAllArticles } from "@/lib/articles"
 import { siteConfig } from "@/../site.config"
-import { AdSlot } from "@/components/AdSlot"
-import { CrossPromo } from "@/components/CrossPromo"
-import { NewsletterSignup } from "@/components/NewsletterSignup"
+import { QuoteCTA } from "@/components/QuoteCTA"
 import { ShareButtons } from "@/components/ShareButtons"
 
 export const revalidate = 300
@@ -36,6 +34,20 @@ export async function generateMetadata({
   }
 }
 
+/**
+ * Split markdown body at roughly 40% by finding a paragraph break near that point.
+ */
+function splitBody(body: string): [string, string] {
+  const target = Math.floor(body.length * 0.4)
+  // Find the next double-newline after the target point
+  const breakPoint = body.indexOf("\n\n", target)
+  if (breakPoint === -1 || breakPoint > body.length * 0.7) {
+    // If no good break found, just split at target
+    return [body, ""]
+  }
+  return [body.slice(0, breakPoint), body.slice(breakPoint)]
+}
+
 export default function ArticlePage({
   params,
 }: {
@@ -43,6 +55,8 @@ export default function ArticlePage({
 }) {
   const article = getArticleBySlug(params.slug)
   if (!article) notFound()
+
+  const [bodyFirst, bodyRest] = splitBody(article.body)
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -107,15 +121,24 @@ export default function ArticlePage({
             <ShareButtons title={article.title} slug={article.slug} />
           </div>
 
-          {/* Body */}
+          {/* Body — first part */}
           <div className="prose-article">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {article.body}
+              {bodyFirst}
             </ReactMarkdown>
           </div>
 
-          {/* In-article ad */}
-          <AdSlot position="in-article" />
+          {/* Mid CTA — only if we successfully split the body */}
+          {bodyRest && (
+            <>
+              <QuoteCTA position="mid" category={article.category} />
+              <div className="prose-article">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {bodyRest}
+                </ReactMarkdown>
+              </div>
+            </>
+          )}
 
           {/* Tags */}
           {article.tags.length > 0 && (
@@ -131,6 +154,9 @@ export default function ArticlePage({
             </div>
           )}
 
+          {/* Bottom CTA */}
+          <QuoteCTA position="bottom" category={article.category} />
+
           {/* Share again at bottom */}
           <div className="mt-8 border-t border-zinc-800 pt-6">
             <ShareButtons title={article.title} slug={article.slug} />
@@ -139,13 +165,10 @@ export default function ArticlePage({
 
         {/* Sidebar */}
         <aside className="mt-10 lg:mt-0 lg:w-72 shrink-0 space-y-6">
-          <AdSlot position="sidebar" />
-          <NewsletterSignup />
+          <QuoteCTA position="mid" />
         </aside>
       </div>
 
-      {/* Cross-promo */}
-      <CrossPromo />
     </>
   )
 }

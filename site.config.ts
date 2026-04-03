@@ -16,9 +16,9 @@ export const siteConfig = {
   ],
   crossPromo: {
     primary: {
-      label: "Need an installer?",
-      url: "https://tradihubai.com.au",
-      cta: "Get Quotes Free",
+      label: "Get 3 Free Quotes",
+      url: "https://tradihubai.com.au/jobs/new?trade=solar&ref=solarhub",
+      cta: "Get Quotes Now",
     },
     network: ["tradihubai.com.au", "renohubai.com.au"],
   },

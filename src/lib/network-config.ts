@@ -36,4 +36,10 @@ export const networkSites: NetworkSite[] = [
     description: "Pool & outdoor living guides for Australians",
     accent: "#06b6d4",
   },
+  {
+    name: "Car Scout",
+    url: "https://car-scout.com.au",
+    description: "AI car buying & research for Australians",
+    accent: "#facc15",
+  },
 ]

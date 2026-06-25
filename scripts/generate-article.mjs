@@ -131,14 +131,15 @@ console.log(`  image: ${image ? "yes" : "none"} · ${article.body.length} chars`
 // Ping IndexNow (Bing, Yandex, etc.) so the new article gets crawled quickly.
 if (domain) {
   try {
-    const liveUrl = `https://${domain}/${slug}`
+    const host = `www.${domain}` // apex 307-redirects to www; IndexNow needs the direct host
+    const liveUrl = `https://${host}/${slug}`
     const res = await fetch("https://api.indexnow.org/indexnow", {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=utf-8" },
       body: JSON.stringify({
-        host: domain,
+        host,
         key: INDEXNOW_KEY,
-        keyLocation: `https://${domain}/${INDEXNOW_KEY}.txt`,
+        keyLocation: `https://${host}/${INDEXNOW_KEY}.txt`,
         urlList: [liveUrl],
       }),
     })

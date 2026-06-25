@@ -34,6 +34,8 @@ if (!ANTHROPIC_KEY) {
 const cfgSrc = fs.readFileSync(path.join(ROOT, "site.config.ts"), "utf8")
 const siteName = (cfgSrc.match(/name:\s*"([^"]+)"/) || [])[1] || "Hub"
 const tagline = (cfgSrc.match(/tagline:\s*"([^"]+)"/) || [])[1] || ""
+const domain = (cfgSrc.match(/domain:\s*"([^"]+)"/) || [])[1] || ""
+const INDEXNOW_KEY = "80561c0fdb213e3217bf3eb8ab94e40c"
 const catBlock = (cfgSrc.match(/categories:\s*\[([\s\S]*?)\]/) || [])[1] || ""
 const categories = [...catBlock.matchAll(/"([^"]+)"/g)].map((m) => m[1])
 if (!categories.length) {
@@ -125,3 +127,23 @@ fs.writeFileSync(outPath, JSON.stringify(article, null, 2))
 console.log(`Wrote ${path.relative(ROOT, outPath)}`)
 console.log(`  ${siteName} · ${category} · "${article.title}"`)
 console.log(`  image: ${image ? "yes" : "none"} · ${article.body.length} chars`)
+
+// Ping IndexNow (Bing, Yandex, etc.) so the new article gets crawled quickly.
+if (domain) {
+  try {
+    const liveUrl = `https://${domain}/${slug}`
+    const res = await fetch("https://api.indexnow.org/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify({
+        host: domain,
+        key: INDEXNOW_KEY,
+        keyLocation: `https://${domain}/${INDEXNOW_KEY}.txt`,
+        urlList: [liveUrl],
+      }),
+    })
+    console.log(`  IndexNow: ${res.status} (${liveUrl})`)
+  } catch (e) {
+    console.log(`  IndexNow ping failed: ${e.message}`)
+  }
+}

@@ -1,0 +1,36 @@
+name: Weekly article
+
+# Generates one fresh article every Monday ~9am AEST and commits it
+# (Vercel then rebuilds). Also runnable on demand from the Actions tab.
+on:
+  schedule:
+    - cron: "0 23 * * 0" # Sun 23:00 UTC = Mon 09:00 AEST
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Generate article
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: node scripts/generate-article.mjs
+      - name: Commit & push
+        run: |
+          git config user.name "DLK Network Bot"
+          git config user.email "bot@dlkstudio.com.au"
+          git add content/articles
+          if git diff --cached --quiet; then
+            echo "No new article to commit."
+          else
+            git commit -m "Weekly article ($(date +%F))"
+            git push
+          fi

@@ -62,7 +62,7 @@ Return ONLY a JSON object (no markdown fence, no prose) with exactly these keys:
   "body": "the full article in GitHub-flavoured Markdown — 600-900 words, with ## headings, short paragraphs, at least one bullet list or table, and an actionable takeaway. Do NOT repeat the title as an H1.",
   "tags": ["3-6 lowercase tags"]
 }`
-const USER = `Write a fresh ${siteName} article in the "${category}" category for Australian readers. Pick a specific, useful angle (a how-to, a cost guide, a comparison, a mistakes-to-avoid list, or a seasonal guide). Avoid these existing topics: ${[...existingSlugs].join(", ") || "(none yet)"}.`
+const USER = `Today's date is ${new Date().toISOString().slice(0, 10)}. Write a fresh ${siteName} article in the "${category}" category for Australian readers. Pick a specific, useful angle (a how-to, a cost guide, a comparison, a mistakes-to-avoid list, or a seasonal guide). Use the current year where a year is relevant — never present a past year as "current". Avoid these existing topics: ${[...existingSlugs].join(", ") || "(none yet)"}.`
 
 async function generate() {
   const res = await fetch("https://api.anthropic.com/v1/messages", {

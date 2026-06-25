@@ -5,6 +5,7 @@ import { CategoryNav } from "@/components/CategoryNav"
 import { QuoteCTA } from "@/components/QuoteCTA"
 import { CrossPromo } from "@/components/CrossPromo"
 import { NewsletterSignup } from "@/components/NewsletterSignup"
+import { BusinessAd } from "@/components/BusinessAd"
 
 export const revalidate = 300
 
@@ -83,6 +84,11 @@ export default function HomePage() {
           </a>
         </section>
       )}
+
+      {/* Business for sale — flows in from TradiHub */}
+      <div className="mb-10">
+        <BusinessAd />
+      </div>
 
       {/* Article grid */}
       {rest.length > 0 && (

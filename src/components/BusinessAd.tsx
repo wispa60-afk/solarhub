@@ -31,7 +31,7 @@ export async function BusinessAd() {
           <img
             src={ad.image}
             alt={ad.title}
-            className="h-48 w-full object-cover sm:h-auto sm:w-64 sm:shrink-0"
+            className="h-48 w-full object-cover sm:w-64 sm:shrink-0"
           />
         )}
         <div className="flex flex-1 flex-col p-5">

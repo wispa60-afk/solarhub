@@ -7,7 +7,7 @@ function slugify(s: string) {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = `https://${siteConfig.domain}`
+  const base = `https://www.${siteConfig.domain}`
   const articles = getAllArticles()
 
   const articleUrls = articles.map((a) => ({

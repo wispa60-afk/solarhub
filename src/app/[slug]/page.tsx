@@ -6,6 +6,7 @@ import { getArticleBySlug, getAllArticles } from "@/lib/articles"
 import { siteConfig } from "@/../site.config"
 import { QuoteCTA } from "@/components/QuoteCTA"
 import { ShareButtons } from "@/components/ShareButtons"
+import { BusinessAd } from "@/components/BusinessAd"
 
 export const revalidate = 300
 
@@ -156,6 +157,9 @@ export default function ArticlePage({
 
           {/* Bottom CTA */}
           <QuoteCTA position="bottom" category={article.category} />
+
+          {/* Business-for-sale ad (flows in from TradiHub) */}
+          <BusinessAd />
 
           {/* Share again at bottom */}
           <div className="mt-8 border-t border-zinc-800 pt-6">

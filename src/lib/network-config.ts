@@ -24,4 +24,16 @@ export const networkSites: NetworkSite[] = [
     description: "Solar energy guides for Australian homeowners",
     accent: "#0ea5e9",
   },
+  {
+    name: "PropertyHub",
+    url: "https://propertyhubai.com.au",
+    description: "Property & real estate guides for Australians",
+    accent: "#10b981",
+  },
+  {
+    name: "PoolHub",
+    url: "https://poolhubai.com.au",
+    description: "Pool & outdoor living guides for Australians",
+    accent: "#06b6d4",
+  },
 ]

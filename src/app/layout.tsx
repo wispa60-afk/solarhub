@@ -3,6 +3,7 @@ import { siteConfig } from "@/../site.config"
 import { NetworkHeader } from "@/components/NetworkHeader"
 import { NetworkFooter } from "@/components/NetworkFooter"
 import "./globals.css"
+import Script from "next/script"
 
 export const metadata: Metadata = {
   title: {
@@ -26,6 +27,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT
   return (
     <html lang="en">
       <head>
@@ -42,6 +44,15 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-[var(--bg)] text-[var(--fg)] antialiased">
+        {adsenseClient && (
+          <Script
+            id="google-adsense"
+            async
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
+          />
+        )}
         <NetworkHeader />
         <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
         <NetworkFooter />

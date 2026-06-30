@@ -3,7 +3,7 @@ import { getAllArticles, saveArticle, type Article } from "@/lib/articles"
 import { searchImage } from "@/lib/unsplash"
 
 export async function GET() {
-  const articles = getAllArticles()
+  const articles = await getAllArticles()
   return NextResponse.json(articles)
 }
 
@@ -38,8 +38,10 @@ export async function POST(req: NextRequest) {
     author: body.author ?? "Editorial",
     publishedAt: body.publishedAt ?? new Date().toISOString(),
     image,
+    // The fact-check gate can post status:"draft" to stage an unlisted article.
+    status: body.status === "draft" ? "draft" : "published",
   }
 
-  saveArticle(article)
-  return NextResponse.json({ ok: true, slug: article.slug }, { status: 201 })
+  await saveArticle(article)
+  return NextResponse.json({ ok: true, slug: article.slug, status: article.status }, { status: 201 })
 }

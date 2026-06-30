@@ -33,7 +33,7 @@ export async function generateMetadata({
   }
 }
 
-export default function CategoryPage({
+export default async function CategoryPage({
   params,
 }: {
   params: { cat: string }
@@ -43,7 +43,7 @@ export default function CategoryPage({
   )
   if (!label) notFound()
 
-  const articles = getArticlesByCategory(label)
+  const articles = await getArticlesByCategory(label)
 
   return (
     <>

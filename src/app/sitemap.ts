@@ -6,9 +6,9 @@ function slugify(s: string) {
   return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = `https://www.${siteConfig.domain}`
-  const articles = getAllArticles()
+  const articles = await getAllArticles()
 
   const articleUrls = articles.map((a) => ({
     url: `${base}/${a.slug}`,

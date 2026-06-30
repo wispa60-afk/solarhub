@@ -2,7 +2,7 @@ import { getAllArticles } from "@/lib/articles"
 import { siteConfig } from "@/../site.config"
 
 export async function GET() {
-  const articles = getAllArticles().slice(0, 20)
+  const articles = (await getAllArticles()).slice(0, 20)
   const base = `https://${siteConfig.domain}`
 
   const items = articles

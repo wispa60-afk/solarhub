@@ -9,8 +9,8 @@ import { BusinessAd } from "@/components/BusinessAd"
 
 export const revalidate = 300
 
-export default function HomePage() {
-  const articles = getAllArticles()
+export default async function HomePage() {
+  const articles = await getAllArticles()
   const featured = articles.slice(0, 1)[0]
   const rest = articles.slice(1)
 

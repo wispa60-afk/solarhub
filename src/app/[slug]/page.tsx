@@ -11,7 +11,7 @@ import { BusinessAd } from "@/components/BusinessAd"
 export const revalidate = 300
 
 export async function generateStaticParams() {
-  const articles = getAllArticles()
+  const articles = await getAllArticles()
   return articles.map((a) => ({ slug: a.slug }))
 }
 
@@ -20,7 +20,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string }
 }): Promise<Metadata> {
-  const article = getArticleBySlug(params.slug)
+  const article = await getArticleBySlug(params.slug)
   if (!article) return {}
   return {
     title: article.title,
@@ -49,12 +49,12 @@ function splitBody(body: string): [string, string] {
   return [body.slice(0, breakPoint), body.slice(breakPoint)]
 }
 
-export default function ArticlePage({
+export default async function ArticlePage({
   params,
 }: {
   params: { slug: string }
 }) {
-  const article = getArticleBySlug(params.slug)
+  const article = await getArticleBySlug(params.slug)
   if (!article) notFound()
 
   const [bodyFirst, bodyRest] = splitBody(article.body)

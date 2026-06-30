@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   description: `Browse all articles on ${siteConfig.name}`,
 }
 
-export default function ArchivePage() {
-  const articles = getAllArticles()
+export default async function ArchivePage() {
+  const articles = await getAllArticles()
   const categories = Array.from(new Set(articles.map((a) => a.category)))
   const allTags = Array.from(new Set(articles.flatMap((a) => a.tags)))
 

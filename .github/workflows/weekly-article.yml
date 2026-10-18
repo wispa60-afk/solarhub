@@ -22,6 +22,8 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          # The site's API_KEY — the generator publishes via POST /api/articles.
+          SITE_API_KEY: ${{ secrets.SITE_API_KEY }}
         run: node scripts/generate-article.mjs
       - name: Commit & push
         run: |

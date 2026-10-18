@@ -128,6 +128,30 @@ console.log(`Wrote ${path.relative(ROOT, outPath)}`)
 console.log(`  ${siteName} · ${category} · "${article.title}"`)
 console.log(`  image: ${image ? "yes" : "none"} · ${article.body.length} chars`)
 
+// Publish to the live site. Since the Jun 30 move to the shared hub_articles
+// table the site no longer reads content/articles — the JSON above is only a
+// backup (its commit also keeps GitHub from disabling this schedule). Without
+// this POST, generated articles never appeared. Fail the run if it doesn't
+// land, so a broken publish is visible instead of silent.
+{
+  const SITE_API_KEY = process.env.SITE_API_KEY
+  if (!domain || !SITE_API_KEY) {
+    console.error("SITE_API_KEY (and site domain) are required to publish.")
+    process.exit(1)
+  }
+  const res = await fetch(`https://www.${domain}/api/articles`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": SITE_API_KEY },
+    body: JSON.stringify(article),
+  })
+  const out = await res.text()
+  if (!res.ok) {
+    console.error(`Publish failed: ${res.status} ${out.slice(0, 200)}`)
+    process.exit(1)
+  }
+  console.log(`  Published: https://www.${domain}/${slug}`)
+}
+
 // Ping IndexNow (Bing, Yandex, etc.) so the new article gets crawled quickly.
 if (domain) {
   try {

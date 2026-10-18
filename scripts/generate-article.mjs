@@ -48,8 +48,23 @@ const articlesDir = path.join(ROOT, "content", "articles")
 fs.mkdirSync(articlesDir, { recursive: true })
 const existing = fs.existsSync(articlesDir) ? fs.readdirSync(articlesDir).filter((f) => f.endsWith(".json")) : []
 const existingSlugs = new Set(existing.map((f) => f.replace(/\.json$/, "")))
+
+// The live site (hub_articles table) is the source of truth — the local JSON
+// folder only has what this script wrote, so checking it alone let the same
+// topic and the same hero photo come up again and again.
+const live = domain
+  ? await fetch(`https://www.${domain}/api/articles`).then((r) => (r.ok ? r.json() : [])).catch(() => [])
+  : []
+for (const a of live) existingSlugs.add(a.slug)
+const usedImages = new Set(live.map((a) => (a.image || "").split("?")[0]).filter(Boolean))
+const liveTitles = live.map((a) => `"${a.title}" (${a.category})`)
+
 const argCat = process.argv[2]
-const category = argCat && categories.includes(argCat) ? argCat : categories[Math.floor(Math.random() * categories.length)]
+// Least-covered category first, ties broken at random.
+const catCount = (c) => live.filter((a) => a.category === c).length
+const fewest = Math.min(...categories.map(catCount))
+const thin = categories.filter((c) => catCount(c) === fewest)
+const category = argCat && categories.includes(argCat) ? argCat : thin[Math.floor(Math.random() * thin.length)]
 
 const slugify = (s) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 70)
@@ -64,7 +79,7 @@ Return ONLY a JSON object (no markdown fence, no prose) with exactly these keys:
   "body": "the full article in GitHub-flavoured Markdown — 600-900 words, with ## headings, short paragraphs, at least one bullet list or table, and an actionable takeaway. Do NOT repeat the title as an H1.",
   "tags": ["3-6 lowercase tags"]
 }`
-const USER = `Today's date is ${new Date().toISOString().slice(0, 10)}. Write a fresh ${siteName} article in the "${category}" category for Australian readers. Pick a specific, useful angle (a how-to, a cost guide, a comparison, a mistakes-to-avoid list, or a seasonal guide). Use the current year where a year is relevant — never present a past year as "current". Avoid these existing topics: ${[...existingSlugs].join(", ") || "(none yet)"}.`
+const USER = `Today's date is ${new Date().toISOString().slice(0, 10)}. Write a fresh ${siteName} article in the "${category}" category for Australian readers. Pick a specific, useful angle (a how-to, a cost guide, a comparison, a mistakes-to-avoid list, or a seasonal guide). Use the current year where a year is relevant — never present a past year as "current". These articles already exist — pick a clearly different topic, not a reworded version of any of them:\n${liveTitles.join("\n") || [...existingSlugs].join(", ") || "(none yet)"}`
 
 async function generate() {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -92,12 +107,15 @@ async function unsplashImage(query) {
   if (!UNSPLASH_KEY) return undefined
   try {
     const r = await fetch(
-      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape`,
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=20&orientation=landscape`,
       { headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` } },
     )
     if (!r.ok) return undefined
     const d = await r.json()
-    return d.results?.[0]?.urls?.regular
+    // Similar topics return the same top result — take the first photo no
+    // other article on this site is already using.
+    const urls = (d.results || []).map((p) => p.urls?.regular).filter(Boolean)
+    return urls.find((u) => !usedImages.has(u.split("?")[0]))
   } catch {
     return undefined
   }
@@ -108,7 +126,10 @@ let slug = slugify(art.title)
 let n = 2
 while (existingSlugs.has(slug)) slug = `${slugify(art.title)}-${n++}`
 
-const image = await unsplashImage(art.tags?.[0] ? `${art.tags[0]} ${category}` : category)
+const image =
+  (await unsplashImage(art.tags?.[0] ? `${art.tags[0]} ${category}` : category)) ??
+  (await unsplashImage(art.title)) ??
+  (await unsplashImage(category))
 
 const article = {
   slug,

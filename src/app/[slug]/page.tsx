@@ -25,6 +25,8 @@ export async function generateMetadata({
   return {
     title: article.title,
     description: article.excerpt,
+    // Drafts are unlisted (staged or retired duplicates) — keep them out of search.
+    ...(article.status === "draft" ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title: article.title,
       description: article.excerpt,

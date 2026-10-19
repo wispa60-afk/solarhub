@@ -7,7 +7,7 @@ export interface NetworkSite {
 
 export const networkSites: NetworkSite[] = [
   {
-    name: "TradiHub",
+    name: "TradiHub AI",
     url: "https://tradihubai.com.au",
     description: "Find trusted Australian tradies",
     accent: "#0d9488",

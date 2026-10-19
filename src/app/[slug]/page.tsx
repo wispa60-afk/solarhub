@@ -7,6 +7,7 @@ import { siteConfig } from "@/../site.config"
 import { QuoteCTA } from "@/components/QuoteCTA"
 import { ShareButtons } from "@/components/ShareButtons"
 import { BusinessAd } from "@/components/BusinessAd"
+import { TradieSignupAd } from "@/components/TradieSignupAd"
 
 export const revalidate = 300
 
@@ -162,6 +163,9 @@ export default async function ArticlePage({
 
           {/* Business-for-sale ad (flows in from TradiHub) */}
           <BusinessAd />
+
+          {/* Tradie recruitment house ad for TradiHub AI */}
+          <TradieSignupAd />
 
           {/* Share again at bottom */}
           <div className="mt-8 border-t border-zinc-800 pt-6">

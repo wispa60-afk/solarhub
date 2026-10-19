@@ -20,7 +20,7 @@ export default async function HomePage() {
       <section className="mb-10">
         <h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
           Going Solar?{" "}
-          <span style={{ color: "var(--accent)" }}>Get 3 Free Quotes from Local Installers</span>
+          <span style={{ color: "var(--accent)" }}>Get Free Quotes from Local Installers</span>
         </h1>
         <p className="mt-3 text-lg text-zinc-400 max-w-2xl">
           Compare prices from licensed solar installers in your area. Free, no obligation.

@@ -4,13 +4,13 @@ type Position = "top" | "mid" | "bottom"
 
 const COPY: Record<Position, { heading: string; sub?: string; cta: string }> = {
   top: {
-    heading: "Getting quotes? Compare prices from 3 local tradies — free.",
+    heading: "Getting quotes? Compare prices from local tradies — free.",
     cta: "Get My Quotes →",
     sub: "Free \u00b7 60 seconds \u00b7 No obligation",
   },
   mid: {
-    heading: "Ready to get started? Local tradies are available now.",
-    cta: "Get 3 Free Quotes",
+    heading: "Ready to get started? Post your job free and local tradies can quote.",
+    cta: "Get Free Quotes",
     sub: "Free \u00b7 60 seconds \u00b7 No obligation",
   },
   bottom: {
@@ -30,7 +30,9 @@ function getTradeSlug(): string {
 }
 
 function getRefSlug(): string {
-  return siteConfig.domain.replace(".com.au", "").replace(/\./g, "-")
+  // Same tag as the homepage CTA and tradie card (e.g. "renohub"), so sign-ups
+  // from one hub don't split across two ref values.
+  return siteConfig.name.toLowerCase()
 }
 
 export function QuoteCTA({

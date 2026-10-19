@@ -3,23 +3,33 @@
 import { useState } from "react"
 import { siteConfig } from "@/../site.config"
 
+const CONTACT_EMAIL = "dlkstudiotechnology@gmail.com"
+
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" })
-  const [status, setStatus] = useState<"idle" | "sent">("idle")
+  const [status, setStatus] = useState<"idle" | "opened">("idle")
 
+  // No mail backend on the hubs: hand the message to the visitor's own email
+  // app, addressed to us, so it actually reaches a real inbox.
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    // For now, just show confirmation. Wire to email API later.
-    setStatus("sent")
+    const subject = `${siteConfig.name} enquiry from ${form.name}`
+    const body = `${form.message}\n\n— ${form.name} (${form.email})`
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    setStatus("opened")
   }
 
-  if (status === "sent") {
+  if (status === "opened") {
     return (
       <div className="mx-auto max-w-xl text-center py-16">
-        <h1 className="text-2xl font-bold text-white mb-3">Message Sent</h1>
+        <h1 className="text-2xl font-bold text-white mb-3">Almost there</h1>
         <p className="text-zinc-400">
-          Thanks for getting in touch. We'll get back to you as soon as
-          possible.
+          Your email app should have opened with your message ready — just press send. If nothing opened, email us
+          at{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-[var(--accent)] underline">
+            {CONTACT_EMAIL}
+          </a>
+          .
         </p>
       </div>
     )
@@ -29,10 +39,12 @@ export default function ContactPage() {
     <div className="mx-auto max-w-xl">
       <h1 className="text-3xl font-bold text-white mb-2">Contact Us</h1>
       <p className="text-zinc-400 mb-8">
-        Have a question, feedback, or content suggestion for {siteConfig.name}?
-        Drop us a message below.
+        Have a question, feedback, or content suggestion for {siteConfig.name}? Drop us a message below, or email{" "}
+        <a href={`mailto:${CONTACT_EMAIL}`} className="text-[var(--accent)] underline">
+          {CONTACT_EMAIL}
+        </a>
+        .
       </p>
-
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1">

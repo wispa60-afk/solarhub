@@ -64,11 +64,12 @@ export function tradesFor(category?: string | null): string[] {
   return own?.length ? own : HUB_TRADES[siteConfig.name] ?? []
 }
 
-export async function getTradies(trades: string[], limit = 3): Promise<TradieCard[]> {
-  if (!trades.length) return []
+/** fill: top up with other live tradies when too few match the trades. */
+export async function getTradies(trades: string[], limit = 3, fill = false): Promise<TradieCard[]> {
+  if (!trades.length && !fill) return []
   try {
     const res = await fetch(
-      `${TRADIHUB}/api/public/network-tradies?trades=${encodeURIComponent(trades.join(","))}&limit=${limit}`,
+      `${TRADIHUB}/api/public/network-tradies?trades=${encodeURIComponent(trades.join(","))}&limit=${limit}${fill ? "&fill=1" : ""}`,
       { next: { revalidate: 600 } },
     )
     if (!res.ok) return []

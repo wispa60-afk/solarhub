@@ -7,9 +7,9 @@ import { siteConfig } from "@/../site.config"
  * the hub). Falls back to the hub's trades; renders nothing if the feed is
  * empty or unreachable.
  */
-export async function LocalTradies({ category }: { category?: string | null }) {
-  let tradies = await getTradies(tradesFor(category))
-  if (!tradies.length && category) tradies = await getTradies(tradesFor(null))
+export async function LocalTradies({ category, limit = 3 }: { category?: string | null; limit?: number }) {
+  // Matching trades first, then every other live tradie fills the rest.
+  const tradies = await getTradies(tradesFor(category), limit, true)
   if (!tradies.length) return null
 
   const ref = siteConfig.name.toLowerCase()

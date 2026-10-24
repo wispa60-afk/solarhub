@@ -92,7 +92,7 @@ export default async function HomePage() {
       </div>
 
       {/* Live tradie profiles — flow in from TradiHub AI */}
-      <LocalTradies />
+      <LocalTradies limit={8} />
 
       {/* Article grid */}
       {rest.length > 0 && (

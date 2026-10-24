@@ -91,18 +91,23 @@ export default async function HomePage() {
         <BusinessAd />
       </div>
 
-      {/* Live tradie profiles — flow in from TradiHub AI */}
-      <LocalTradies limit={8} />
-
-      {/* Article grid */}
+      {/* Article grid, with a few TradiHub AI tradies after the first row (rotates hourly) */}
       {rest.length > 0 && (
         <section className="mb-10">
           <h2 className="mb-6 text-xl font-bold text-white">Latest Articles</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {rest.map((article) => (
+            {rest.slice(0, 3).map((article) => (
               <ArticleCard key={article.slug} article={article} />
             ))}
           </div>
+          <LocalTradies seed={`home-${Math.floor(Date.now() / 3_600_000)}`} />
+          {rest.length > 3 && (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {rest.slice(3).map((article) => (
+                <ArticleCard key={article.slug} article={article} />
+              ))}
+            </div>
+          )}
         </section>
       )}
 

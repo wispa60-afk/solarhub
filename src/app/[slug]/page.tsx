@@ -166,7 +166,7 @@ export default async function ArticlePage({
           <BusinessAd />
 
           {/* Tradies who do this kind of work, from TradiHub AI */}
-          <LocalTradies category={article.category} />
+          <LocalTradies category={article.category} seed={article.slug} />
 
           {/* Tradie recruitment house ad for TradiHub AI */}
           <TradieSignupAd />

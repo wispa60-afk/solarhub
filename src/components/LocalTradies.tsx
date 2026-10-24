@@ -6,10 +6,15 @@ import { siteConfig } from "@/../site.config"
  * linking to their profile (with a ?ref tag so the tradie's lead report shows
  * the hub). Falls back to the hub's trades; renders nothing if the feed is
  * empty or unreachable.
+ *
+ * Shows a few at a time, not the whole list: the best match for this page
+ * stays first, the other slots rotate through everyone else by `seed`, so
+ * each article (and the homepage, hour to hour) shows different tradies.
  */
-export async function LocalTradies({ category, limit = 3 }: { category?: string | null; limit?: number }) {
-  // Matching trades first, then every other live tradie fills the rest.
-  const tradies = await getTradies(tradesFor(category), limit, true)
+export async function LocalTradies({ category, seed = "", show = 3 }: { category?: string | null; seed?: string; show?: number }) {
+  // Matching trades first, then every other live tradie fills the pool.
+  const pool = await getTradies(tradesFor(category), 8, true)
+  const tradies = rotate(pool, seed, show)
   if (!tradies.length) return null
 
   const ref = siteConfig.name.toLowerCase()
@@ -69,4 +74,14 @@ export async function LocalTradies({ category, limit = 3 }: { category?: string 
       </div>
     </section>
   )
+}
+
+/** First card fixed, then `show - 1` from the rest starting at a seed-picked offset. */
+function rotate<T>(pool: T[], seed: string, show: number): T[] {
+  const [first, ...rest] = pool
+  if (!first) return []
+  let h = 0
+  for (const c of seed) h = (h * 31 + c.charCodeAt(0)) >>> 0
+  const picked = rest.length ? Array.from({ length: Math.min(show - 1, rest.length) }, (_, i) => rest[(h + i) % rest.length]) : []
+  return [first, ...picked]
 }

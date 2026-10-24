@@ -1,4 +1,4 @@
-import { getTradies, tradesFor } from "@/lib/tradie-feed"
+import { getTradies, suburbLinks, tradesFor } from "@/lib/tradie-feed"
 import { siteConfig } from "@/../site.config"
 
 /**
@@ -15,6 +15,7 @@ export async function LocalTradies({ category, seed = "", show = 3 }: { category
   // Matching trades first, then every other live tradie fills the pool.
   const pool = await getTradies(tradesFor(category), 8, true)
   const tradies = rotate(pool, seed, show)
+  const links = suburbLinks(category, seed)
   if (!tradies.length) return null
 
   const ref = siteConfig.name.toLowerCase()
@@ -72,6 +73,16 @@ export async function LocalTradies({ category, seed = "", show = 3 }: { category
           </a>
         ))}
       </div>
+      {links.length > 0 && (
+        <p className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm text-zinc-500">
+          <span>Find local:</span>
+          {links.map((l) => (
+            <a key={l.href} href={l.href} target="_blank" rel="noopener" className="text-zinc-400 hover:text-white">
+              {l.label}
+            </a>
+          ))}
+        </p>
+      )}
     </section>
   )
 }

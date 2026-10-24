@@ -79,3 +79,38 @@ export async function getTradies(trades: string[], limit = 3, fill = false): Pro
     return []
   }
 }
+
+// TradiHub AI builds trade × suburb pages for these trades (its top 15).
+const SUBURB_PAGE_TRADES: Record<string, string> = {
+  "pool-building": "Pool builders", "pool-maintenance": "Pool technicians", plumbing: "Plumbers",
+  renovations: "Renovation builders", electrical: "Electricians", carpentry: "Carpenters",
+  painting: "Painters", roofing: "Roofers", tiling: "Tilers", concreting: "Concreters",
+  landscaping: "Landscapers", fencing: "Fencers", flooring: "Flooring installers",
+  "air-conditioning": "Air-con installers", solar: "Solar installers",
+}
+
+// A spread of SEQ suburbs TradiHub AI has pages for.
+const SUBURBS: [string, string][] = [
+  ["brisbane-cbd", "Brisbane CBD"], ["chermside", "Chermside"], ["nundah", "Nundah"], ["carindale", "Carindale"],
+  ["coorparoo", "Coorparoo"], ["mount-gravatt", "Mount Gravatt"], ["sunnybank", "Sunnybank"], ["acacia-ridge", "Acacia Ridge"],
+  ["indooroopilly", "Indooroopilly"], ["toowong", "Toowong"], ["bulimba", "Bulimba"], ["logan", "Logan"],
+  ["springfield", "Springfield"], ["ipswich", "Ipswich"], ["southport", "Southport"], ["robina", "Robina"],
+  ["maroochydore", "Maroochydore"], ["caloundra", "Caloundra"],
+]
+
+/**
+ * Links into TradiHub AI's "{trade} in {suburb}" pages for this page's topic —
+ * the network linking to those pages helps them get crawled and ranked. Four
+ * suburbs per page, rotated by `seed` so the whole set gets linked over time.
+ */
+export function suburbLinks(category: string | null | undefined, seed: string): { label: string; href: string }[] {
+  const trade = tradesFor(category).find((t) => SUBURB_PAGE_TRADES[t])
+  if (!trade) return []
+  let h = 0
+  for (const c of seed) h = (h * 31 + c.charCodeAt(0)) >>> 0
+  const ref = siteConfig.name.toLowerCase()
+  return Array.from({ length: 4 }, (_, i) => SUBURBS[(h + i) % SUBURBS.length]).map(([slug, name]) => ({
+    label: `${SUBURB_PAGE_TRADES[trade]} in ${name}`,
+    href: `${TRADIHUB}/trades/${trade}/${slug}?ref=${ref}`,
+  }))
+}

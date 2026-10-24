@@ -58,7 +58,7 @@ export default function TermsPage() {
         </h2>
         <p>
           All original content on this Site, including text, graphics, and
-          design, is the property of DLK Studio Technology Pty Ltd and is
+          design, is the property of DLK Studio Technology and is
           protected by Australian copyright law. You may not reproduce,
           distribute, or republish any content without prior written consent.
         </p>
@@ -79,7 +79,7 @@ export default function TermsPage() {
         </h2>
         <p>
           To the fullest extent permitted by law, {siteConfig.name} and DLK
-          Studio Technology Pty Ltd shall not be liable for any loss or damage
+          Studio Technology shall not be liable for any loss or damage
           arising from your use of, or reliance on, information provided on
           this Site. This includes but is not limited to direct, indirect,
           incidental, or consequential damages.

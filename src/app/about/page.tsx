@@ -43,7 +43,7 @@ export default function AboutPage() {
         </h2>
         <p>
           {siteConfig.name} is part of the DLK Network, a group of Australian
-          digital properties operated by DLK Studio Technology Pty Ltd.
+          digital properties operated by DLK Studio Technology (ABN 98 396 386 040).
         </p>
 
         <h2 className="text-xl font-semibold text-white pt-2">Contact</h2>

@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       <div className="space-y-6 text-zinc-300 leading-relaxed">
         <p>
           This Privacy Policy describes how {siteConfig.name} ("{siteConfig.name}",
-          "we", "us", or "our"), operated by DLK Studio Technology Pty Ltd
+          "we", "us", or "our"), operated by DLK Studio Technology (ABN 98 396 386 040)
           (ABN pending), collects, uses, and discloses your personal
           information when you visit {siteConfig.domain} (the "Site").
         </p>

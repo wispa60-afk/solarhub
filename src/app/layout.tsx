@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     default: `${siteConfig.name} — ${siteConfig.tagline}`,
     template: `%s | ${siteConfig.name}`,
   },
-  description: siteConfig.tagline,
+  description: siteConfig.description,
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

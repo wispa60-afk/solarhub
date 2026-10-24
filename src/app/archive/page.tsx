@@ -6,8 +6,8 @@ import { ArchiveClient } from "./ArchiveClient"
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: "Archive",
-  description: `Browse all articles on ${siteConfig.name}`,
+  title: "All Articles",
+  description: `Every ${siteConfig.name} article in one place: browse ${siteConfig.tagline.replace(/^Australia's /, "").replace(/ Guide$/, "").toLowerCase()} guides by date and category, from costs and planning to maintenance.`,
 }
 
 export default async function ArchivePage() {

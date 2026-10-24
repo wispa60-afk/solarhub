@@ -3,7 +3,7 @@ import { siteConfig } from "@/../site.config"
 
 export const metadata: Metadata = {
   title: "Disclaimer",
-  description: `Disclaimer for ${siteConfig.name}`,
+  description: `${siteConfig.name} articles are general information only, not professional advice. Check costs, licences and rules with a qualified local tradie.`,
 }
 
 export default function DisclaimerPage() {

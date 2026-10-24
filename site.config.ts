@@ -1,5 +1,6 @@
 export const siteConfig = {
   name: "SolarHub",
+  description: "Solar guides for Australian homes: panel and battery costs, rebates, EV charging and solar hot water, plus free quotes from local solar installers.",
   tagline: "Australia's Solar Energy Guide",
   domain: "solarhubai.com.au",
   port: 3202,

@@ -3,7 +3,7 @@ import { siteConfig } from "@/../site.config"
 
 export const metadata: Metadata = {
   title: "Terms of Use",
-  description: `Terms of Use for ${siteConfig.name}`,
+  description: `The terms that apply when you use ${siteConfig.name}, including our ${siteConfig.tagline.replace(/^Australia's /, "").replace(/ Guide$/, "").toLowerCase()} guides, links to other websites and quote requests.`,
 }
 
 export default function TermsPage() {

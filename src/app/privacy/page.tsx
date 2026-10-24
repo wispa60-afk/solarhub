@@ -3,7 +3,7 @@ import { siteConfig } from "@/../site.config"
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: `Privacy Policy for ${siteConfig.name}`,
+  description: `How ${siteConfig.name} collects, uses and protects your information, including cookies, analytics, newsletter sign-ups and quote requests.`,
 }
 
 export default function PrivacyPage() {

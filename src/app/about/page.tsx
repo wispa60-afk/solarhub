@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import { siteConfig } from "@/../site.config"
 
 export const metadata: Metadata = {
-  title: "About",
-  description: `About ${siteConfig.name} — ${siteConfig.tagline}`,
+  title: `About ${siteConfig.name}`,
+  description: `Who's behind ${siteConfig.name}: plain-English ${siteConfig.tagline.replace(/^Australia's /, "").replace(/ Guide$/, "").toLowerCase()} guides for Australian homeowners, how we research articles, and how to get in touch.`,
 }
 
 export default function AboutPage() {

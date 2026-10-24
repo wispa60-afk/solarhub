@@ -28,8 +28,8 @@ export async function generateMetadata({
     siteConfig.categories.find((c) => slugify(c) === params.cat) ??
     params.cat
   return {
-    title: `${label} Articles`,
-    description: `Browse ${label.toLowerCase()} articles on ${siteConfig.name}`,
+    title: `${label} Guides & Articles`,
+    description: `${label} guides from ${siteConfig.name}: costs, planning tips and what to ask before you hire, written for Australian homeowners.`,
   }
 }
 

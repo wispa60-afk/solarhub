@@ -64,7 +64,15 @@ const argCat = process.argv[2]
 const catCount = (c) => live.filter((a) => a.category === c).length
 const fewest = Math.min(...categories.map(catCount))
 const thin = categories.filter((c) => catCount(c) === fewest)
-const category = argCat && categories.includes(argCat) ? argCat : thin[Math.floor(Math.random() * thin.length)]
+
+// Topic queue: content/topic-queue.json lists articles we want written next
+// (e.g. topics where TradiHub AI has tradies, so the article's "Local
+// tradies" box shows someone relevant). Taken first-in-first-out; when it's
+// empty the thinnest category is picked as before.
+const queuePath = path.join(ROOT, "content", "topic-queue.json")
+const queue = fs.existsSync(queuePath) ? JSON.parse(fs.readFileSync(queuePath, "utf8")) : []
+const queued = !argCat && queue.find((q) => categories.includes(q.category))
+const category = queued ? queued.category : argCat && categories.includes(argCat) ? argCat : thin[Math.floor(Math.random() * thin.length)]
 
 const slugify = (s) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 70)
@@ -79,7 +87,7 @@ Return ONLY a JSON object (no markdown fence, no prose) with exactly these keys:
   "body": "the full article in GitHub-flavoured Markdown — 600-900 words, with ## headings, short paragraphs, at least one bullet list or table, and an actionable takeaway. Do NOT repeat the title as an H1.",
   "tags": ["3-6 lowercase tags"]
 }`
-const USER = `Today's date is ${new Date().toISOString().slice(0, 10)}. Write a fresh ${siteName} article in the "${category}" category for Australian readers. Pick a specific, useful angle (a how-to, a cost guide, a comparison, a mistakes-to-avoid list, or a seasonal guide). Use the current year where a year is relevant — never present a past year as "current". These articles already exist — pick a clearly different topic, not a reworded version of any of them:\n${liveTitles.join("\n") || [...existingSlugs].join(", ") || "(none yet)"}`
+const USER = `Today's date is ${new Date().toISOString().slice(0, 10)}. Write a fresh ${siteName} article in the "${category}" category for Australian readers. ${queued ? `Write about this topic: ${queued.brief}` : "Pick a specific, useful angle (a how-to, a cost guide, a comparison, a mistakes-to-avoid list, or a seasonal guide)."} Use the current year where a year is relevant — never present a past year as "current". These articles already exist — pick a clearly different topic, not a reworded version of any of them:\n${liveTitles.join("\n") || [...existingSlugs].join(", ") || "(none yet)"}`
 
 async function generate() {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -146,6 +154,10 @@ const article = {
 const outPath = path.join(articlesDir, `${slug}.json`)
 fs.writeFileSync(outPath, JSON.stringify(article, null, 2))
 console.log(`Wrote ${path.relative(ROOT, outPath)}`)
+if (queued) {
+  fs.writeFileSync(queuePath, JSON.stringify(queue.filter((q) => q !== queued), null, 2) + "\n")
+  console.log(`  from topic queue (${queue.length - 1} left)`)
+}
 console.log(`  ${siteName} · ${category} · "${article.title}"`)
 console.log(`  image: ${image ? "yes" : "none"} · ${article.body.length} chars`)
 

@@ -53,8 +53,8 @@ const CATEGORY_TRADES: Record<string, string[]> = {
   "commercial solar": ["solar", "electrical"],
   "off-grid": ["solar", "electrical"],
   maintenance: ["solar", "electrical"],
-  selling: ["painting", "cleaning", "landscaping", "handyman"],
-  renting: ["cleaning", "pest-control", "handyman", "locksmith"],
+  selling: ["handyman", "painting", "cleaning", "landscaping", "rubbish-removal"],
+  renting: ["cleaning", "handyman", "rubbish-removal", "pest-control", "locksmith"],
   renovating: ["renovations", "painting", "handyman"],
   buying: ["pest-control", "handyman", "roofing"],
 }

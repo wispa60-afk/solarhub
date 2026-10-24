@@ -6,6 +6,7 @@ import { QuoteCTA } from "@/components/QuoteCTA"
 import { CrossPromo } from "@/components/CrossPromo"
 import { NewsletterSignup } from "@/components/NewsletterSignup"
 import { BusinessAd } from "@/components/BusinessAd"
+import { LocalTradies } from "@/components/LocalTradies"
 
 export const revalidate = 300
 
@@ -89,6 +90,9 @@ export default async function HomePage() {
       <div className="mb-10">
         <BusinessAd />
       </div>
+
+      {/* Live tradie profiles — flow in from TradiHub AI */}
+      <LocalTradies />
 
       {/* Article grid */}
       {rest.length > 0 && (

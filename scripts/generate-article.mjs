@@ -85,7 +85,8 @@ Return ONLY a JSON object (no markdown fence, no prose) with exactly these keys:
   "title": "compelling, specific, <70 chars, no clickbait",
   "excerpt": "one-sentence summary, <160 chars",
   "body": "the full article in GitHub-flavoured Markdown — 600-900 words, with ## headings, short paragraphs, at least one bullet list or table, and an actionable takeaway. Do NOT repeat the title as an H1.",
-  "tags": ["3-6 lowercase tags"]
+  "tags": ["3-6 lowercase tags"],
+  "imageQuery": "2-5 word stock photo search for the physical thing this article is about, e.g. timber side gate house, electrician switchboard, pool pump filter. Plain visible objects only, no abstract words like cost, guide or rights."
 }`
 const USER = `Today's date is ${new Date().toISOString().slice(0, 10)}. Write a fresh ${siteName} article in the "${category}" category for Australian readers. ${queued ? `Write about this topic: ${queued.brief}` : "Pick a specific, useful angle (a how-to, a cost guide, a comparison, a mistakes-to-avoid list, or a seasonal guide)."} Use the current year where a year is relevant — never present a past year as "current". These articles already exist — pick a clearly different topic, not a reworded version of any of them:\n${liveTitles.join("\n") || [...existingSlugs].join(", ") || "(none yet)"}`
 
@@ -111,22 +112,77 @@ async function generate() {
   return JSON.parse(text)
 }
 
-async function unsplashImage(query) {
-  if (!UNSPLASH_KEY) return undefined
+async function unsplashPhotos(query) {
+  if (!UNSPLASH_KEY) return []
   try {
     const r = await fetch(
       `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=20&orientation=landscape`,
       { headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` } },
     )
-    if (!r.ok) return undefined
+    if (!r.ok) return []
     const d = await r.json()
-    // Similar topics return the same top result — take the first photo no
-    // other article on this site is already using.
-    const urls = (d.results || []).map((p) => p.urls?.regular).filter(Boolean)
-    return urls.find((u) => !usedImages.has(u.split("?")[0]))
+    // Similar topics return the same top result — skip photos another article
+    // on this site is already using.
+    return (d.results || [])
+      .filter((p) => p.urls?.regular && p.urls?.small && !usedImages.has(p.urls.regular.split("?")[0]))
+      .slice(0, 8)
   } catch {
+    return []
+  }
+}
+
+// Search words alone go wrong ("current" found a beach warning sign, "paint"
+// an abstract artwork), so Claude looks at the photos. Returns the best one,
+// null if none fit, undefined if the check itself failed.
+async function bestPhoto(photos, article) {
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": ANTHROPIC_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 10,
+        messages: [{
+          role: "user",
+          content: [
+            ...photos.map((p) => ({ type: "image", source: { type: "url", url: p.urls.small } })),
+            {
+              type: "text",
+              text: `These are photos 1 to ${photos.length}, in order. Pick the hero photo for this Australian home article: "${article.title}". It must plainly show the article's subject and look like a normal home or trade setting. Reply with only the photo's number, or 0 if none of them fit.`,
+            },
+          ],
+        }],
+      }),
+    })
+    if (!res.ok) throw new Error(`Anthropic ${res.status}`)
+    const data = await res.json()
+    const n = parseInt((data.content || []).find((b) => b.type === "text")?.text ?? "", 10)
+    if (Number.isNaN(n)) throw new Error("no number in reply")
+    return n === 0 ? null : (photos[n - 1] ?? null)
+  } catch (e) {
+    console.log(`  Photo check failed: ${e.message}`)
     return undefined
   }
+}
+
+async function pickImage(article) {
+  const queries = [article.imageQuery, article.tags?.[0] ? `${article.tags[0]} ${category}` : "", article.title, category].filter(Boolean)
+  let fallback
+  for (const q of queries) {
+    const photos = await unsplashPhotos(q)
+    if (!photos.length) continue
+    fallback ??= photos[0]
+    const best = await bestPhoto(photos, article)
+    if (best) return best.urls.regular
+    if (best === undefined) break
+  }
+  // An unchecked photo beats no article: the weekly run must still publish.
+  if (fallback) console.log("  WARNING: no photo passed the check, using the top search result")
+  return fallback?.urls.regular
 }
 
 const art = await generate()
@@ -134,10 +190,7 @@ let slug = slugify(art.title)
 let n = 2
 while (existingSlugs.has(slug)) slug = `${slugify(art.title)}-${n++}`
 
-const image =
-  (await unsplashImage(art.tags?.[0] ? `${art.tags[0]} ${category}` : category)) ??
-  (await unsplashImage(art.title)) ??
-  (await unsplashImage(category))
+const image = await pickImage(art)
 
 const article = {
   slug,

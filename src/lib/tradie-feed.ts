@@ -25,7 +25,7 @@ const HUB_TRADES: Record<string, string[]> = {
   RenoHub: ["renovations", "carpentry", "tiling", "plastering", "painting", "handyman", "flooring"],
   PoolHub: ["pool-building", "pool-maintenance", "fencing", "landscaping", "paving"],
   SolarHub: ["solar", "electrical", "air-conditioning"],
-  PropertyHub: ["handyman", "cleaning", "mowing", "landscaping", "pest-control", "painting"],
+  PropertyHub: ["handyman", "carpentry", "cleaning", "mowing", "landscaping", "pest-control", "painting"],
 }
 
 // Article category (lowercased) → trades that do that work.
